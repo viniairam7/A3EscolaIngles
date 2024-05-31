@@ -1,10 +1,7 @@
 package view;
 
 import controller.LoginController;
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -12,15 +9,12 @@ public class Login extends javax.swing.JFrame {
 
     private final LoginController controller;
 
-   
     public Login() {
         initComponents();
         controller = new LoginController(this);
-        
     }
 
-    
-    
+  
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -199,7 +193,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_TextEmailActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       abrirMenuPrincipal();
+        realizarCadastro();
     
        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -209,16 +203,8 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_Site1ActionPerformed
 
    
-    public static void main(String args[]) {
-       
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-                
     
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton Site;
@@ -244,9 +230,37 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
+   private boolean realizarCadastro() {
+        String email = TextEmail.getText().trim();
+        String nome = TextNome.getText().trim();
+        String cpf = TextCPF.getText().trim();
+        String telefone = TextTel.getText().trim();
+
+        if (email.isEmpty() || nome.isEmpty() || cpf.isEmpty() || telefone.isEmpty()) {
+            exibeMensagem("Por favor, preencha todos os campos.");
+            return false;
+        }
+
+        if (controller.cadastrarAluno(email, nome, cpf, telefone)) {
+            exibeMensagem("Aluno cadastrado com sucesso.");
+            abrirMenuPrincipal();
+            return true;
+        } else {
+            exibeMensagem("Erro ao cadastrar aluno.");
+            return false;
+        }
+    }
     public void exibeMensagem(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem);
-}
+    }
+
+    public void abrirMenuPrincipal() {
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.setVisible(true);
+        this.setVisible(false);
+    }
+ 
+
 
     public JTextField getTextCPF() {
         return TextCPF;
@@ -282,20 +296,26 @@ public class Login extends javax.swing.JFrame {
         this.TextTel = TextTel;
     }
 
-    
-public void abrirMenuPrincipal() {
-    MenuPrincipal menu = new MenuPrincipal();
-    menu.setVisible(true);
-    this.setVisible(false);
-}
-
-    private void openLink(String url) {
-    try {
-        Desktop.getDesktop().browse(new URI(url));
-    } catch (IOException | URISyntaxException e) {
-        e.printStackTrace();
+   private void openLink(String url) {
+        try {
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
     }
+ public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Login().setVisible(true);
+            }
+        });
+     
+    }
+  
 }
 
-}
+
+   
+     
+
 
