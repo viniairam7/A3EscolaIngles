@@ -1,30 +1,28 @@
 package view;
+import controller.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 public class MenuPrincipal extends javax.swing.JFrame {
-
     
+
     public MenuPrincipal() {
-        initComponents(); {
-jButton1.addActionListener(new java.awt.event.ActionListener() {
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton1ActionPerformed(evt);       
+        initComponents();
     }
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
-    abrirConteudo();
-}                                          
 
-});
+   
+    
 
-    }
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        Conteudo = new javax.swing.JButton();
+        Tempo = new javax.swing.JComboBox<>();
+        Aula = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -39,36 +37,36 @@ jButton1.addActionListener(new java.awt.event.ActionListener() {
         jLabel2.setText("Anote aqui suas preferências para estudo:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 350, 30));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Mongolian Baiti", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(153, 0, 0));
-        jButton1.setText("MEUS CONTEÚDOS");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Conteudo.setBackground(new java.awt.Color(255, 255, 255));
+        Conteudo.setFont(new java.awt.Font("Mongolian Baiti", 1, 12)); // NOI18N
+        Conteudo.setForeground(new java.awt.Color(153, 0, 0));
+        Conteudo.setText("MEUS CONTEÚDOS");
+        Conteudo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ConteudoActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, -1, -1));
+        getContentPane().add(Conteudo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, -1, -1));
 
-        jComboBox1.setBackground(new java.awt.Color(153, 0, 0));
-        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "30 min", "1 hora " }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        Tempo.setBackground(new java.awt.Color(153, 0, 0));
+        Tempo.setForeground(new java.awt.Color(255, 255, 255));
+        Tempo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "30 min", "1 hora " }));
+        Tempo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                TempoActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 190, -1));
+        getContentPane().add(Tempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 190, -1));
 
-        jComboBox3.setBackground(new java.awt.Color(153, 0, 0));
-        jComboBox3.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aula Mensal (R$150,00)", "Aulas Semanais (R$250,00)", "Aulas Diárias (R$450,00)" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        Aula.setBackground(new java.awt.Color(153, 0, 0));
+        Aula.setForeground(new java.awt.Color(255, 255, 255));
+        Aula.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aula Mensal (R$150,00)", "Aulas Semanais (R$250,00)", "Aulas Diárias (R$450,00)" }));
+        Aula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                AulaActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 190, -1));
+        getContentPane().add(Aula, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 190, -1));
 
         jLabel7.setFont(new java.awt.Font("Cambria Math", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,27 +91,55 @@ jButton1.addActionListener(new java.awt.event.ActionListener() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    private void AulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AulaActionPerformed
+        String aulaSelecionada = (String) Aula.getSelectedItem();
+        String tempoSelecionado = (String) Tempo.getSelectedItem();
+        enviarDadosParaBanco(aulaSelecionada, tempoSelecionado);
+    }//GEN-LAST:event_AulaActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void abrirConteudo() {
+    private void TempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TempoActionPerformed
+     
+    }//GEN-LAST:event_TempoActionPerformed
+
+    
+
+    private void ConteudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConteudoActionPerformed
+     abrirConteudo();
+    }//GEN-LAST:event_ConteudoActionPerformed
+
+private void abrirConteudo() {
     Conteudo conteudo = new Conteudo();
     conteudo.setVisible(true);
     this.dispose(); // Fecha a janela atual após abrir a janela Conteudo
 }
 
-    /**
-     * @param args the command line arguments
-     */
+    private void enviarDadosParaBanco(String Aula, String Tempo) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "INSERT INTO Servicos (Aula, Tempo) VALUES (?, ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, Aula);
+            stmt.setString(2, Tempo);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Dados inseridos com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao inserir dados no banco de dados: " + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -124,10 +150,12 @@ jButton1.addActionListener(new java.awt.event.ActionListener() {
         
     }
 
+   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> Aula;
+    private javax.swing.JButton Conteudo;
+    private javax.swing.JComboBox<String> Tempo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -136,5 +164,7 @@ jButton1.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JLabel jLabel7;
     // End of variables declaration//GEN-END:variables
 
+  
+    
 
 }
